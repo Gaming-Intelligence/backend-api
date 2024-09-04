@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const saveData = async (req, res) => {
     try {
-        const {name, username, is_premium, coins} = req.body;
+        const {username, is_premium, coins} = req.body;
+        const name = req.body.first_name;
         const userExist = await User.findOne({username});
         if(userExist) {
             return res.status(400).json({message: "User already exists"});
