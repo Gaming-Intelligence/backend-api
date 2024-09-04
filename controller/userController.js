@@ -32,13 +32,31 @@ export const saveData = async (req, res) => {
 
 export const allUsers = async (req, res) => {
     try {
-        const users = await User.find();
-        if(users.length === 0){
+        const {username, coins} = req.body;
+        const userFound = await User.findOne(username); 
+        if(!userFound){
             return res.status(404).json({message: "User not found"});
         }
+
+        userFound.coins = coins + userFound.coins;
+        await userFound.save();
         res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({error:"Internal Server Error"});
+        res.status(500).json({error: error.message});
     }
 }
 
+
+export const findCoins = async (req, res) => {
+    try {
+        const {username} = req.body;
+        const userFound = await User.findOne(username); 
+        if(!userFound){
+            return res.status(404).json({message: "User not found"});
+        }
+
+        res.status(200).json(userFound.coins);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+}
