@@ -19,8 +19,8 @@ export const saveData = async (req, res) => {
             username,
             is_premium,
             coins,
-            refferalCode,
-            refferalLink
+            // refferalCode,
+            // refferalLink
         });
 
         res.status(200).json(newUser);
