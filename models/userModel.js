@@ -20,12 +20,12 @@ const userSchema = new mongoose.Schema({
     refferalCode: {
         type: String,
         unique: true,
-        required: true
+        required: false
     },
     refferalLink: {
         type: String,
         unique: true,
-        required: true
+        required: false
     }
 })
 
