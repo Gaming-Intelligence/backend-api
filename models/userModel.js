@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     name:{
         type: String,
-        required: false
+        required: true
     },
     username:{
         type: String,
@@ -20,12 +20,12 @@ const userSchema = new mongoose.Schema({
     refferalCode: {
         type: String,
         unique: true,
-        required: false
+        required: true
     },
     refferalLink: {
         type: String,
         unique: true,
-        required: false
+        required: true
     }
 })
 

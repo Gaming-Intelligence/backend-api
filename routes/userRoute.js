@@ -3,9 +3,9 @@ import { allUsers, saveData, findCoins } from '../controller/userController.js';
 
 const route = express.Router();
 
-route.get("/getAllUsers", allUsers);
+route.post("/getAllUsers", allUsers);
 route.post("/saveUser", saveData);
-route.post("/findCoins", findCoins);
+route.get("/findCoins", findCoins);
 
 
 export default route;

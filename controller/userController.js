@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const saveData = async (req, res) => {
     try {
         const {username, is_premium, coins} = req.body;
-        //const name = req.body.first_name;
+        const name = req.body.first_name;
         const userExist = await User.findOne({username});
         if(userExist) {
             return res.status(400).json({message: "User already exists"});
@@ -15,12 +15,12 @@ export const saveData = async (req, res) => {
         const refferalLink = `https://t.me/gi_bubble_blaster_bot/run?startapp=${refferalCode}`;
         
         const newUser = await User.create({
-            //name,
+            name,
             username,
             is_premium,
             coins,
-            // refferalCode,
-            // refferalLink
+            refferalCode,
+            refferalLink
         });
 
         res.status(200).json(newUser);
