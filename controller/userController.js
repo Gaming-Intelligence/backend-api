@@ -34,7 +34,7 @@ export const saveData = async (req, res) => {
 export const saveCoins = async (req, res) => {
     try {
         const {username, coins} = req.body;
-        const userFound = await User.findOne(username); 
+        const userFound = await User.findOne({username}); 
         if(!userFound){
             return res.status(404).json({message: "User not found"});
         }
