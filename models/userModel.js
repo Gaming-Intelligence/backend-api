@@ -14,8 +14,7 @@ const userSchema = new mongoose.Schema({
     },
     coins:{
         type: Number,
-        default: 14400,
-        required: true,
+        default: 14400
     },
     refferalCode: {
         type: String,

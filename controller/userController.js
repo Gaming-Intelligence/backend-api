@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const saveData = async (req, res) => {
     try {
-        const {username, is_premium, coins} = req.body;
+        const {username, is_premium} = req.body;
         const name = req.body.first_name;
         const userExist = await User.findOne({username});
         if(userExist) {
@@ -18,7 +18,6 @@ export const saveData = async (req, res) => {
             name,
             username,
             is_premium,
-            coins,
             refferalCode,
             refferalLink
         });
@@ -41,7 +40,7 @@ export const saveCoins = async (req, res) => {
 
         userFound.coins = coins + userFound.coins;
         await userFound.save();
-        res.status(200).json(users);
+        res.status(200).json({userFound});
     } catch (error) {
         res.status(500).json({error: error.message});
     }
