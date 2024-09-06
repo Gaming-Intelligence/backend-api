@@ -55,7 +55,7 @@ export const findCoins = async (req, res) => {
             return res.status(404).json({message: "User not found"});
         }
 
-        res.status(200).json(userFound.coins);
+        res.status(200).json({coins: userFound.coins});
     } catch (error) {
         res.status(500).json({error: error.message});
     }
