@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     is_premium:{
-        type: Boolean,
+        type: String,
         required: true
     },
     coins:{
