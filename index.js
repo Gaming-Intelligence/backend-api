@@ -8,7 +8,7 @@ const app = express();
 
 app.use(bodyParser.json());
 dotenv.config();
-const PORT = process.env.LIVE_URL ||5000;
+const PORT = process.env.PORT ||5000;
 const MONGOURL = process.env.MONGO_URL;
 
 mongoose.connect(MONGOURL).then(()=>{

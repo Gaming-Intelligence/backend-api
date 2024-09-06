@@ -31,7 +31,7 @@ export const saveData = async (req, res) => {
     }
 }
 
-export const allUsers = async (req, res) => {
+export const saveCoins = async (req, res) => {
     try {
         const {username, coins} = req.body;
         const userFound = await User.findOne(username); 
