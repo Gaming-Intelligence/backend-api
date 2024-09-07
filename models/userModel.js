@@ -25,7 +25,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true
+    },
+    joinedViaLink: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "users"
+            }
+        ]
     }
-})
+});
 
 export default mongoose.model("users", userSchema);

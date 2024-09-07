@@ -60,3 +60,34 @@ export const findCoins = async (req, res) => {
         res.status(500).json({error: error.message});
     }
 }
+
+
+export const registerUsingLink = async (req, res) => {
+    try {
+        const rcvdRefferalCode = req.query.startapp;
+        const user = await User.findOne({ refferalCode: rcvdRefferalCode });
+        if (!user) { return res.status(404).json({ message: 'Incorrect Refferal Code.' }); }
+
+        // creating a new user
+        const {username, is_premium} = req.body;
+        const name = req.body.first_name;
+        const refferalCode = uuidv4();
+        const refferalLink = `https://t.me/gi_bubble_blaster_bot/run?startapp=${refferalCode}`;
+        const newUser = await User.create({
+            name,
+            username, 
+            is_premium,
+            coins,
+            refferalCode,
+            refferalLink
+        });
+
+        // Updating refferal link Owner
+        user.joinedViaLink.push(newUser._id);
+        await user.save();
+
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+}
