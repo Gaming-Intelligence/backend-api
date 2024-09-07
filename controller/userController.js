@@ -71,6 +71,11 @@ export const registerUsingLink = async (req, res) => {
         // creating a new user
         const {username, is_premium} = req.body;
         const name = req.body.first_name;
+        const userExist = await User.findOne({username});
+        if(userExist) {
+            return res.status(400).json({message: "User already exists"});
+        }
+        
         const refferalCode = uuidv4();
         const refferalLink = `https://t.me/gi_bubble_blaster_bot/run?startapp=${refferalCode}`;
         const newUser = await User.create({
