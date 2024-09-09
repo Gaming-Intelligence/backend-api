@@ -29,8 +29,8 @@ const userSchema = new mongoose.Schema({
     joinedViaLink: {
         type: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "users"
+                type: String,
+                required: true
             }
         ]
     }
