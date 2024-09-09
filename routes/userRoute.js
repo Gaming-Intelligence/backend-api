@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveCoins, saveData, findCoins, registerUsingLink } from '../controller/userController.js';
+import { saveCoins, saveData, findCoins } from '../controller/userController.js';
 
 const route = express.Router();
 
