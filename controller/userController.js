@@ -81,3 +81,48 @@ export const findCoins = async (req, res) => {
     }
 }
 
+
+export const findUser = async (req, res) => {
+    try {
+        const { username } = req.body;
+        const userFound = await User.findOne({ username });
+        if (userFound) {
+            return res.status(200).json({ isRegistered: true });
+        }else {
+            return res.status(200).json({ isRegistered: false });
+        }
+    }catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message });
+    }
+}
+
+
+export const saveTask = async (req, res) => {
+    try {
+        const { username, taskName } = req.body;
+        const userFound = await User.findOne({ username });
+        if (!userFound) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // check taskName exists in user or not, if taskName exists send -> Your Task is already completed
+        if (userFound.taskName.includes(taskName)) {
+            return res.status(200).json({ message: "Your Task is already completed" });
+        }
+
+        // If taskName exists in user or not, if taskName exists send -> Your Task is already completed
+        if (userFound.taskName.includes(taskName)) {
+            return res.status(200).json({ message: "Your Task is already completed" });
+        }
+
+        // If not, add taskName + 1000 coins to user Schema
+        userFound.taskName.push(taskName);
+        userFound.coins += 1000;
+        await userFound.save();
+        res.status(200).json({ message: "Points collected" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
