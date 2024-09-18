@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 11123
     },
+    coinsEarned: {
+        type: Number,
+        default: 0
+    },
     refferalCode: {
         type: String,
         unique: true,
@@ -35,7 +39,7 @@ const userSchema = new mongoose.Schema({
             }
         ]
     },
-    taskName: [ {type: String} ],
+    taskName: [ {type: String} ]
 });
 
 export default mongoose.model("users", userSchema);
