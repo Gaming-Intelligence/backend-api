@@ -8,6 +8,13 @@ export const saveData = async (req, res) => {
         const name = req.body.first_name;
         const rcvdRefferalCode = req.body.referrerId;
 
+        console.log('Api edit');
+        console.log(username);
+        console.log(is_premium);
+        console.log(name);
+        console.log(rcvdRefferalCode);
+        
+
         // Check if user already exists
         const userExist = await User.findOne({ username });
         if (userExist) { return res.status(400).json({ message: "User already exists" }); }
