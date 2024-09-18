@@ -17,9 +17,6 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 11123
     },
-    coinsEarned: {
-        type: Number
-    },
     refferalCode: {
         type: String,
         unique: true,

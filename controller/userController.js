@@ -7,12 +7,6 @@ export const saveData = async (req, res) => {
         const { username, is_premium } = req.body;
         const name = req.body.first_name;
         const rcvdRefferalCode = req.body.referrerId;
-
-        console.log('Api edit');
-        console.log(username);
-        console.log(is_premium);
-        console.log(name);
-        console.log(rcvdRefferalCode);
         
 
         // Check if user already exists
@@ -35,14 +29,8 @@ export const saveData = async (req, res) => {
 
         // Updating refferal link Owner
         linkOwner.joinedViaLink.push(newUser.username);
-        if (is_premium === 'yes') { 
-            linkOwner.coins += 20000; 
-            linkOwner.coinsEarned += 20000; 
-        }
-        else { 
-            linkOwner.coins += 5000;
-            linkOwner.coinsEarned += 5000;  
-        }
+        if (is_premium === 'yes') { linkOwner.coins += 20000; }
+        else { linkOwner.coins += 5000; }
 
         await linkOwner.save();
         return res.status(200).json({ message: 'User registered successfully' });
