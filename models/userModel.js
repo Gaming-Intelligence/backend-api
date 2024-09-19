@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 11123
     },
+    keys: {
+        type: Number,
+        default: 3,
+        max: 10
+    },
     refferalCode: {
         type: String,
         unique: true,
