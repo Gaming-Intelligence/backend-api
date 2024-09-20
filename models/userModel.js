@@ -41,6 +41,6 @@ const userSchema = new mongoose.Schema({
         ]
     },
     taskName: [ {type: String} ]
-});
+}, {timestamps: true});
 
 export default mongoose.model("users", userSchema);

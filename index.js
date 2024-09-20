@@ -37,14 +37,20 @@ const incrementUserKeys = async () => {
 
 
 // Schedule task 
-cron.schedule('0 5,11,17,23 * * *', () => { 
-    console.log('Running scheduled task to update user keys...'); 
-    incrementUserKeys(); 
-});  
 // cron.schedule('* * * * *', () => { 
 //     console.log('Running scheduled task to update user keys...'); 
 //     incrementUserKeys(); 
 // });  
+cron.schedule('30 23,5,11,17 * * *', () => { 
+    console.log('Running scheduled task to update user keys...'); 
+    incrementUserKeys(); 
+}, { scheduled: true, timezone: "UTC" });  
+
+// cron.schedule('12,13 14,12,17,23 * * *', () => { 
+//     console.log('Running scheduled task to update user keys...'); 
+//     incrementUserKeys(); 
+// }, { scheduled: true, timezone: "IST" });  
+
 
 
 
