@@ -6,7 +6,6 @@ import route from './routes/userRoute.js';
 import cors from 'cors';
 import cron from 'node-cron';
 import User from './models/userModel.js';
-// import {incrementUserKeys} from './utils/increaseKeys.js';
 
 
 const app = express();
@@ -24,32 +23,33 @@ mongoose.connect(MONGOURL).then(() => {
 
 
 
-// -----------------------------------------------------
 // Increment user keys fxn 
 const incrementUserKeys = async () => {
     try {
-        await User.updateMany({}, { $inc: { keys: 1 } });
-        console.log("User keys updated successfully.");
+      const users = await User.find(); 
+      const updatePromises = users.map(async (user) => {
+        if (user.keys < 10) {
+          user.keys += 1;       
+          await user.save(); 
+        }
+      });
+  
+      await Promise.all(updatePromises); // Wait for all updates to finish
+      console.log("DONE - User keys updated successfully.");
     } catch (error) {
-        console.error("Error updating user keys:", error);
+      console.error("Error updating user keys:", error);
     }
-};
+}; 
 
 
-// Schedule task 
-// cron.schedule('* * * * *', () => { 
-//     console.log('Running scheduled task to update user keys...'); 
-//     incrementUserKeys(); 
-// });  
+
+// Schedule task  
 cron.schedule('30 23,5,11,17 * * *', () => { 
     console.log('Running scheduled task to update user keys...'); 
     incrementUserKeys(); 
 }, { scheduled: true, timezone: "UTC" });  
 
-// cron.schedule('12,13 14,12,17,23 * * *', () => { 
-//     console.log('Running scheduled task to update user keys...'); 
-//     incrementUserKeys(); 
-// }, { scheduled: true, timezone: "IST" });  
+ 
 
 
 
