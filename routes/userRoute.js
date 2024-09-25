@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveCoins, saveData, findCoins, findUser, saveTask, findUserDetails, decreaseKeys } from '../controller/userController.js';
+import { saveCoins, saveData, findCoins, findUser, saveTask, findUserDetails, decreaseKeys, updateLinkAndCode, generateFirstVideoCodeDoc } from '../controller/userController.js';
 
 const route = express.Router();
 
@@ -10,6 +10,8 @@ route.post("/findUser", findUser);
 route.post("/saveTask", saveTask);
 route.post("/findUserDetails", findUserDetails);
 route.post("/decreaseKeys", decreaseKeys);
+route.post("/generateFirstVideoCodeDoc", generateFirstVideoCodeDoc);
+route.post("/updateLinkAndCode", updateLinkAndCode);
 
 
 export default route;

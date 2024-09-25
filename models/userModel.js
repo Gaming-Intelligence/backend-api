@@ -32,6 +32,14 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    lastUsedCode: {
+        type: String,
+        required: false
+    },
+    videoWatched: {
+        type: Number,
+        default: 0
+    },
     joinedViaLink: {
         type: [
             {

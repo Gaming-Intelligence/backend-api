@@ -1,4 +1,6 @@
 import User from "../models/userModel.js"
+import VideoCode from "../models/videoCode.js"
+
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -151,3 +153,74 @@ export const decreaseKeys = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+
+export const generateFirstVideoCodeDoc = async (req, res) => {
+    try{
+        const {link, code} = req.body;
+        if(!link || !code) {
+            return res.status(400).json({ message: 'Link and code both are required.' });  // Return error if required fields are missing.
+        }
+
+        const videoDocument = await VideoCode.findOne({});
+        if(!videoDocument){
+            await VideoCode.create({link, code});
+            res.status(200).json({message: 'First document created successfully.'});
+        }else{
+            return res.status(400).json({ message: 'First document already exists.' });
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
+export const updateLinkAndCode = async (req, res) => {
+    try{
+        const {link, code} = req.body;
+        if(!link || !code) {
+            return res.status(400).json({ message: 'Link and code both are required.' });  // Return error if required fields are missing.
+        }
+
+        const videoDocument = await VideoCode.findOne({});
+        videoDocument.link = link;
+        videoDocument.code = code;
+        await videoDocument.save();
+        res.status(200).json({message: 'Link and code updated successfully.', videoDocument: videoDocument});
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+// username, code => check user's_code = code_in_schema => 1000Gi points
+export const verifyYoutubeVideoCode = async (req, res) => {
+    try{
+        const {username, code} = req.body;
+        if(!username || !code) {
+            return res.status(400).json({ message: 'Both username and code are required.' });  // Return error if required fields are missing.
+        }
+
+        // find user
+        const userFound = await User.findOne({ username });
+        if(!userFound) { return res.status(404).json({ message: 'User not found.' }); }
+
+        // Check last used code
+        if(userFound.lastUsedCode === code) { 
+            return res.status(401).json({ message: "You've already completed this task." }); 
+        } else {
+            // update coins + lastUsedCode + videoWatched
+            userFound.coins += 1000;
+            userFound.lastUsedCode = code;
+            userFound.videoWatched += 1;
+            await userFound.save();
+            return res.status(200).json({ message: 'Code verified & Task completed successfully.', userFound });
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
