@@ -224,3 +224,18 @@ export const verifyYoutubeVideoCode = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+export const getLinkAndCode = async (req, res) => {
+    try{
+        const videoDocument = await VideoCode.findOne({});
+        if(!videoDocument) {
+            return res.status(404).json({ message: 'No video code document found.' });
+        }
+
+        res.status(200).json({message: 'Link and code retrieved successfully.', videoDocument: videoDocument});
+    }catch(error){
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
