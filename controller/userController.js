@@ -205,7 +205,7 @@ export const verifyYoutubeVideoCode = async (req, res) => {
         }
 
         // find user
-        const userFound = await User.findOne({ username });
+        const userFound = await User.findOne({ username }); 
         if(!userFound) { return res.status(404).json({ message: 'User not found.' }); }
 
         // Check last used code
