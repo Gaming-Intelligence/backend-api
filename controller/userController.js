@@ -219,7 +219,13 @@ export const verifyYoutubeVideoCode = async (req, res) => {
         // Check last used code
         if(userFound.lastUsedCode === code) { 
             return res.status(401).json({ message: "You've already completed this task." }); 
-        } else {
+        }
+
+        // Find latest Youtube video code
+        const latestCode = await VideoCode.findOne({});
+        if(!latestCode) {return res.status(400).json({ message: 'Youtube video code is not updated by Admin.'}) };
+
+        if( code === latestCode ) {
             // update coins + lastUsedCode + videoWatched
             userFound.coins += 1000;
             userFound.lastUsedCode = code;
