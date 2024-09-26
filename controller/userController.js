@@ -188,6 +188,14 @@ export const updateLinkAndCode = async (req, res) => {
         videoDocument.link = link;
         videoDocument.code = code;
         await videoDocument.save();
+
+        // Empty last used code of all -> update lastUsedCode=''
+        const allUsers = await User.find({});
+        allUsers.forEach(async (user) => {
+            user.lastUsedCode = '';
+            await user.save();
+        });
+
         res.status(200).json({message: 'Link and code updated successfully.', videoDocument: videoDocument});
     }catch(error){
         console.log(error);
