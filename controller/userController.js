@@ -207,24 +207,28 @@ export const updateLinkAndCode = async (req, res) => {
 // username, code => check user's_code = code_in_schema => 1000Gi points
 export const verifyYoutubeVideoCode = async (req, res) => {
     try{
+        console.log('Req rcvd.');
+        
         const {username, code} = req.body;
         if(!username || !code) {
             return res.status(400).json({ message: 'Both username and code are required.' });  // Return error if required fields are missing.
         }
-
+        
+        
         // find user
         const userFound = await User.findOne({ username }); 
         if(!userFound) { return res.status(404).json({ message: 'User not found.' }); }
-
+        
         // Check last used code
         if(userFound.lastUsedCode === code) { 
             return res.status(401).json({ message: "You've already completed this task." }); 
         }
-
+        
         // Find latest Youtube video code
-        const latestCode = await VideoCode.findOne({});
+        const latestVideoDoc = await VideoCode.findOne({});
+        const latestCode = latestVideoDoc.code;
         if(!latestCode) {return res.status(400).json({ message: 'Youtube video code is not updated by Admin.'}) };
-
+        
         if( code === latestCode ) {
             // update coins + lastUsedCode + videoWatched
             userFound.coins += 1000;
