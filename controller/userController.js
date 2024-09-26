@@ -189,7 +189,7 @@ export const updateLinkAndCode = async (req, res) => {
         videoDocument.code = code;
         await videoDocument.save();
 
-        // Empty last used code of all -> update lastUsedCode=''
+        // Empty last used code of all users  -> update lastUsedCode=''
         const allUsers = await User.find({});
         allUsers.forEach(async (user) => {
             user.lastUsedCode = '';
