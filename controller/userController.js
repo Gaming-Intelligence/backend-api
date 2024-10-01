@@ -227,8 +227,7 @@ export const verifyYoutubeVideoCode = async (req, res) => {
         // Find latest Youtube video code
         const latestVideoDoc = await VideoCode.findOne({});
         const latestCode = latestVideoDoc.code;
-        if(!latestCode) {return res.status(400).json({ message: 'Youtube video code is not updated by Admin.'}) };
-        
+        if(!latestCode) { return res.status(400).json({ message: 'Youtube video code is not updated by Admin.'}) };
         if( code === latestCode ) {
             // update coins + lastUsedCode + videoWatched
             userFound.coins += 1000;
@@ -236,6 +235,9 @@ export const verifyYoutubeVideoCode = async (req, res) => {
             userFound.videoWatched += 1;
             await userFound.save();
             return res.status(200).json({ message: 'Code verified & Task completed successfully.', userFound });
+        }
+        else{
+            return res.status(401).json({ message: 'Invalid Code.' }); 
         }
     }catch(error){
         console.log(error);
@@ -255,5 +257,28 @@ export const getLinkAndCode = async (req, res) => {
     }catch(error){
         console.log(error);
         res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+// res => username, points, no. of reffered users
+export const arrangeUsersOnBasisOfCoins = async (req, res) => {
+    try {
+        const users = await User.find({}).sort({ coins: -1 }).select('username coins joinedViaLink');  
+        let id = 1;
+
+        // Map the response to return the desired format
+        const formattedUsers = users.map(user => ({
+            id: id++,
+            username: user.username,
+            coins: user.coins,                         
+            referredUsers: user.joinedViaLink.length
+        }));
+
+        return res.status(200).json({ users: formattedUsers });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({ message: e.message });
     }
 };
